@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
 
 const Record = require('./models/record')
 const Category = require('./models/category')
@@ -23,12 +24,42 @@ db.once('open', () => {
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
-// Set routes
+// Set middleware
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// Set route to home
 app.get('/', (req, res) => {
   Record.find()
     .populate('category')
     .lean()
+    .sort({ _id: 'asc' })
     .then(records => res.render('index', { records }))
+    .catch(error => console.error(error))
+})
+
+// Set route to create new record
+app.get('/records/new', (req, res) => {
+  Category.find()
+    .lean()
+    .sort({ _id: 'asc' })
+    .then(categories => res.render('new', { categories }))
+    .catch(error => console.error(error))
+})
+
+app.post('/records/new', (req, res) => {
+  const record = req.body
+  Category.findOne({ title: record.category })
+    .then(category => {
+      record.category = category._id
+
+      Record.create(record)
+        .then(record => {
+          category.records.push(record._id)
+          category.save()
+        })
+        .then(() => res.redirect('/'))
+        .catch(error => console.error(error))
+    })
     .catch(error => console.error(error))
 })
 

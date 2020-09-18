@@ -1,0 +1,60 @@
+<div class="container-md py-5">
+
+  <div class="row">
+    <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">💰 新增支出 💵</h5>
+          <hr>
+          <form method="POST" action="/records/new" class="was-validated">
+            <div class="form-group form-row">
+              <label for="record-name" class="col-md-4 col-form-label">
+                名稱
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="name" class="form-control is-invalid" id="record-name" placeholder="超美味蟹堡"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group form-row">
+              <label for="record-date" class="col-md-4 col-form-label">
+                日期
+              </label>
+              <div class="col-md-8">
+                <input type="date" name="date" class="form-control is-invalid" id="record-date" required>
+              </div>
+            </div>
+
+            <div class="form-group form-row">
+              <label for="record-category" class="col-md-4 col-form-label">
+                類別
+              </label>
+              <div class="col-md-8">
+                <select name="category" id="record-category" class="custom-select" required>
+                  <option value="">請選擇...</option>
+                  {{#each categories}}
+                  <option value="{{this.title}}">{{this.title}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-row">
+              <label for="record-amount" class="col-md-4 col-form-label">
+                金額
+              </label>
+              <div class="col-md-8">
+                <input type="number" name="amount" class="form-control is-invalid" id="record-amount" placeholder="100"
+                  min="1" required>
+                <small class="text-muted form-text">至少輸入 1 元</small>
+              </div>
+            </div>
+
+            <button class="btn btn-success" type="submit">加 入 帳 本</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
