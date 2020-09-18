@@ -1,6 +1,7 @@
 // Include packages and define app related variables
 const express = require('express')
 const mongoose = require('mongoose')
+const exphbs = require('express-handlebars')
 
 const app = express()
 const port = 3000
@@ -15,9 +16,13 @@ db.once('open', () => {
   console.log('MongoDB connected =)')
 })
 
+// Set view engine
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
 // Set routes
 app.get('/', (req, res) => {
-  res.send('expense tracker app coming soon!')
+  res.render('index')
 })
 
 // Listen to server
