@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <ul class="list-group list-group-flush">
+    {{#each records}}
+    <li class="list-group-item list-group-item-action row">
+      <div class="col-8 d-flex justify-content-between align-items-center">
+        <div class="desc d-flex justify-content-between align-items-center">
+          <h1 class="category mr-3 text-secondary">
+            {{{ this.category.icon }}}
+          </h1>
+          <div class="detail">
+            <h4 class="name mb-0">{{this.name}}</h4>
+            <small class="date text-muted">{{this.date}}</small>
+          </div>
+        </div>
+        <big class="amount">{{this.amount}}</big>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+</div>
