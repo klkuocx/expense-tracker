@@ -26,15 +26,16 @@ function createRecords() {
       })
       return categoriesId
     })
-    .then(categoriesId => {
+    .then(id => {
       for (let i = 0; i < 5; i++) {
         Record.create({
           name: `name-${i}`,
-          category: categoriesId[i],
+          category: id[i],
+          date: `2020-09-0${i + 1}`,
           amount: (i + 1) * 100
         })
           .then(record => {
-            Category.findById(categoriesId[i])
+            Category.findById(id[i])
               .then(category => {
                 category.records.push(record._id)
                 category.save()
