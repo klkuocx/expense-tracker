@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <ul class="list-group list-group-flush">
     {{#each records}}
-    <li class="list-group-item list-group-item-action row">
+    <li class="list-group-item list-group-item-action row d-flex">
       <div class="col-8 d-flex justify-content-between align-items-center">
         <div class="desc d-flex justify-content-between align-items-center">
           <h1 class="category mr-3 text-secondary">
@@ -13,6 +13,9 @@
           </div>
         </div>
         <big class="amount">{{this.amount}}</big>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <a class="btn btn-primary" href="/records/{{this._id}}/edit" role="button">編 輯</a>
       </div>
     </li>
     {{/each}}

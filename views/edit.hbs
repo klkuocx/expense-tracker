@@ -6,14 +6,14 @@
         <div class="card-body">
           <h5 class="card-title">💰 新增支出 💵</h5>
           <hr>
-          <form method="POST" action="/records/new" class="was-validated">
+          <form method="POST" action="/records/{{record._id}}/edit" class="was-validated">
             <div class="form-group form-row">
               <label for="record-name" class="col-md-2 col-form-label">
                 名稱
               </label>
               <div class="col-md-10">
                 <input type="text" name="name" class="form-control is-invalid" id="record-name" placeholder="超美味蟹堡"
-                  required>
+                  value="{{record.name}}" required>
               </div>
             </div>
 
@@ -22,7 +22,8 @@
                 日期
               </label>
               <div class="col-md-10">
-                <input type="date" name="date" class="form-control is-invalid" id="record-date" required>
+                <input type="date" name="date" class="form-control is-invalid" id="record-date" value="{{record.date}}"
+                  required>
               </div>
             </div>
 
@@ -34,7 +35,8 @@
                 <select name="category" id="record-category" class="custom-select" required>
                   <option value="">請選擇...</option>
                   {{#each categories}}
-                  <option value="{{this.title}}">{{this.title}}</option>
+                  <option value="{{this.title}}" {{#is this.title "{{record.category.title}}"}} selected {{/is}}>
+                    {{this.title}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -46,12 +48,12 @@
               </label>
               <div class="col-md-10">
                 <input type="number" name="amount" class="form-control is-invalid" id="record-amount" placeholder="100"
-                  min="1" required>
+                  min="1" value="{{record.amount}}" required>
                 <small class="text-muted form-text">至少輸入 1 元</small>
               </div>
             </div>
 
-            <button class="btn btn-success" type="submit">加 入 帳 本</button>
+            <button class="btn btn-success" type="submit">儲 存 變 更</button>
           </form>
         </div>
       </div>
