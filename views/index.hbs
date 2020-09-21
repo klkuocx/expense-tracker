@@ -15,9 +15,35 @@
         <big class="amount">{{this.amount}}</big>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
-        <a class="btn btn-primary" href="/records/{{this._id}}/edit" role="button">編 輯</a>
+        <!-- Edit Button -->
+        <a class="btn btn-primary mr-2" href="/records/{{this._id}}/edit" role="button">編 輯</a>
+
+        <!-- Delete Button trigger modal -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal-{{this._id}}">
+          刪 除
+        </button>
       </div>
     </li>
     {{/each}}
   </ul>
 </div>
+
+<!-- Delete Modal -->
+{{#each records}}
+<div class="modal fade" id="deleteModal-{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <big class="modal-body">
+        確定要刪除 <strong>{{this.name}}</strong> 嗎？
+      </big>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取 消</button>
+        <form action="/records/{{this._id}}/delete" method="POST">
+          <button type="submit" class="btn btn-danger">確認刪除</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}

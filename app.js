@@ -93,7 +93,9 @@ app.post('/records/:id/edit', (req, res) => {
           category.records = category.records.filter(record => record.toString() !== id)
           category.save()
         })
+        .catch(error => console.error(error))
     })
+    .catch(error => console.error(error))
 
   // assign category id in update object
   Category.findOne({ title: update.category })
@@ -109,6 +111,27 @@ app.post('/records/:id/edit', (req, res) => {
         .then(() => res.redirect(`/`))
         .catch(error => console.error(error))
     })
+    .catch(error => console.error(error))
+})
+
+// Set routes to delete record
+app.post('/records/:id/delete', (req, res) => {
+  const id = req.params.id
+
+  Record.findById(id)
+    .then(record => {
+      Category.findById(record.category)
+        // remove record from collection of category
+        .then(category => {
+          category.records = category.records.filter(record => record.toString() !== id)
+          category.save()
+        })
+        .catch(error => console.error(error))
+
+      // delete this record
+      record.remove()
+    })
+    .then(() => res.redirect('/'))
     .catch(error => console.error(error))
 })
 
