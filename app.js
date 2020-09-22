@@ -149,6 +149,7 @@ app.post('/records/:id/delete', (req, res) => {
 app.get('/records', (req, res) => {
   const filter = req.query.filter
   const keyword = req.query.keyword.trim()
+  const sort = req.query.sort
 
   Category.find()
     .lean()
@@ -157,15 +158,17 @@ app.get('/records', (req, res) => {
       Record.find({ category: filter })
         .populate('category')
         .lean()
-        .sort({ _id: 'asc' })
+        .sort({ amount: sort })
         .then(records => {
+          // search keyword
+          records = records.filter(record => record.name.toLowerCase().includes(keyword.toLowerCase()))
+
           // checked total amount
           let totalAmount = 0
           records.forEach(record => totalAmount += record.amount)
 
-          // search keyword
-          records = records.filter(record => record.name.toLowerCase().includes(keyword.toLowerCase()))
-          res.render('index', { records, totalAmount, categories, keyword })
+          // render records
+          res.render('index', { records, totalAmount, categories, keyword, sort })
         })
         .catch(error => console.error(error))
     })

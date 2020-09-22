@@ -1,8 +1,9 @@
 <form class="container mt-5" action="/records">
   <div class="form-group row justify-content-between">
     <div class="filter col-md-4 my-1">
-      <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#category-filter"
+      <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#category-filter"
         aria-expanded="false" aria-controls="category-filter">
+        篩 選 類 別
         <i class="fas fa-filter"></i>
       </button>
       <div class="collapse mt-2" id="category-filter">
@@ -24,8 +25,22 @@
             <i class="fas fa-search"></i>
           </span>
         </div>
-        <input type="text" name="keyword" class="form-control" placeholder="keyword" value="{{keyword}}"
+        <input type="text" name="keyword" class="form-control" placeholder="搜 尋 名 稱..." value="{{keyword}}"
           aria-label="keyword" aria-describedby="search-bar">
+      </div>
+    </div>
+    <div class="sort col-md-4 my-1">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="sort">
+            <i class="fas fa-sort-amount-down"></i>
+          </label>
+        </div>
+        <select class="custom-select" id="sort" name="sort">
+          <option selected>排 序 方 式...</option>
+          <option value="asc" {{#is sort "asc"}} selected {{/is}}>金額遞增</option>
+          <option value="desc" {{#is sort "desc"}} selected {{/is}}>金額遞減</option>
+        </select>
       </div>
     </div>
   </div>
