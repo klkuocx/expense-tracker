@@ -1,6 +1,6 @@
 <form class="container mt-5" action="/records">
-  <div class="form-group row">
-    <div class="filter col-md-3">
+  <div class="form-group row justify-content-between">
+    <div class="filter col-md-4 my-1">
       <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#category-filter"
         aria-expanded="false" aria-controls="category-filter">
         <i class="fas fa-filter"></i>
@@ -10,16 +10,26 @@
           {{#each categories}}
           <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filter"
-              value="{{this._id}}">
+              value="{{this._id}}" checked>
             <label class="custom-control-label" for="customSwitch{{this._id}}">{{this.title}}</label>
           </div>
           {{/each}}
         </div>
       </div>
     </div>
+    <div class="search col-md-4 my-1">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="search-bar">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+        <input type="text" name="keyword" class="form-control" placeholder="keyword" value="{{keyword}}"
+          aria-label="keyword" aria-describedby="search-bar">
+      </div>
+    </div>
   </div>
-  </div>
-  <button type="submit" class="btn btn-dark">Submit</button>
+  <button type="submit" class="btn btn-dark align-self-end">Submit</button>
 </form>
 
 <div class="container my-5">

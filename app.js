@@ -145,10 +145,10 @@ app.post('/records/:id/delete', (req, res) => {
     .catch(error => console.error(error))
 })
 
-// Set routes to filter record
+// Set routes to filter, search record
 app.get('/records', (req, res) => {
   const filter = req.query.filter
-  console.log(filter)
+  const keyword = req.query.keyword.trim()
 
   Category.find()
     .lean()
@@ -159,9 +159,13 @@ app.get('/records', (req, res) => {
         .lean()
         .sort({ _id: 'asc' })
         .then(records => {
+          // checked total amount
           let totalAmount = 0
           records.forEach(record => totalAmount += record.amount)
-          res.render('index', { records, totalAmount, categories })
+
+          // search keyword
+          records = records.filter(record => record.name.toLowerCase().includes(keyword.toLowerCase()))
+          res.render('index', { records, totalAmount, categories, keyword })
         })
         .catch(error => console.error(error))
     })
