@@ -1,3 +1,27 @@
+<form class="container mt-5" action="/records">
+  <div class="form-group row">
+    <div class="filter col-md-3">
+      <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#category-filter"
+        aria-expanded="false" aria-controls="category-filter">
+        <i class="fas fa-filter"></i>
+      </button>
+      <div class="collapse mt-2" id="category-filter">
+        <div class="card card-body">
+          {{#each categories}}
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filter"
+              value="{{this._id}}">
+            <label class="custom-control-label" for="customSwitch{{this._id}}">{{this.title}}</label>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <button type="submit" class="btn btn-dark">Submit</button>
+</form>
+
 <div class="container my-5">
   {{!-- Total amount --}}
   <div class="alert alert-warning row" role="alert" id="total-amount">

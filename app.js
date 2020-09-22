@@ -31,14 +31,20 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Set route to home
 app.get('/', (req, res) => {
-  Record.find()
-    .populate('category')
+  Category.find()
     .lean()
     .sort({ _id: 'asc' })
-    .then(records => {
-      let totalAmount = 0
-      records.forEach(record => totalAmount += record.amount)
-      res.render('index', { records, totalAmount })
+    .then(categories => {
+      Record.find()
+        .populate('category')
+        .lean()
+        .sort({ _id: 'asc' })
+        .then(records => {
+          let totalAmount = 0
+          records.forEach(record => totalAmount += record.amount)
+          res.render('index', { records, totalAmount, categories })
+        })
+        .catch(error => console.error(error))
     })
     .catch(error => console.error(error))
 })
@@ -136,6 +142,29 @@ app.post('/records/:id/delete', (req, res) => {
       record.remove()
     })
     .then(() => res.redirect('/'))
+    .catch(error => console.error(error))
+})
+
+// Set routes to filter record
+app.get('/records', (req, res) => {
+  const filter = req.query.filter
+  console.log(filter)
+
+  Category.find()
+    .lean()
+    .sort({ _id: 'asc' })
+    .then(categories => {
+      Record.find({ category: filter })
+        .populate('category')
+        .lean()
+        .sort({ _id: 'asc' })
+        .then(records => {
+          let totalAmount = 0
+          records.forEach(record => totalAmount += record.amount)
+          res.render('index', { records, totalAmount, categories })
+        })
+        .catch(error => console.error(error))
+    })
     .catch(error => console.error(error))
 })
 
