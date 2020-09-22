@@ -35,7 +35,11 @@ app.get('/', (req, res) => {
     .populate('category')
     .lean()
     .sort({ _id: 'asc' })
-    .then(records => res.render('index', { records }))
+    .then(records => {
+      let totalAmount = 0
+      records.forEach(record => totalAmount += record.amount)
+      res.render('index', { records, totalAmount })
+    })
     .catch(error => console.error(error))
 })
 
