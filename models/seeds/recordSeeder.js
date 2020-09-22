@@ -2,18 +2,11 @@
 const mongoose = require('mongoose')
 const Record = require('../record')
 const Category = require('../category')
+const db = require('../../config/mongoose')
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-const db = mongoose.connection
-db.on('error', () => {
-  console.error('MongoDB error 0_0')
-})
+// Generate record seed
 db.once('open', () => {
-  console.log('MongoDB connected =)')
-
   createRecords()
-
   console.log('recordSeeder.js done ^_^')
 })
 

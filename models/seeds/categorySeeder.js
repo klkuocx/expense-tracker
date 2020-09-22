@@ -1,6 +1,7 @@
 // Include packages and DB related variables
 const mongoose = require('mongoose')
 const Category = require('../category')
+const db = require('../../config/mongoose')
 const categories = [
   ['家居物業', 'fa-home'],
   ['交通出行', 'fa-shuttle-van'],
@@ -12,14 +13,8 @@ const categories = [
   icon: `<i class="fas ${category[1]}"></i>`
 }))
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-const db = mongoose.connection
-db.on('error', () => {
-  console.error('MongoDB error 0_0')
-})
+// Generate category seed
 db.once('open', () => {
-  console.log('MongoDB connected =)')
   Category.create(categories)
   console.log('categorySeeder.js done ^_^')
 })
