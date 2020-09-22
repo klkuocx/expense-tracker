@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const hbshelpers = require('handlebars-helpers')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 const Record = require('./models/record')
 const Category = require('./models/category')
@@ -28,6 +29,7 @@ app.set('view engine', 'hbs')
 
 // Set middleware
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // Set route to home
 app.get('/', (req, res) => {
@@ -92,7 +94,7 @@ app.get('/records/:id/edit', (req, res) => {
     .catch(error => console.error(error))
 })
 
-app.post('/records/:id/edit', (req, res) => {
+app.put('/records/:id', (req, res) => {
   const id = req.params.id
   const update = req.body
   // remove this record from old category
@@ -125,7 +127,7 @@ app.post('/records/:id/edit', (req, res) => {
 })
 
 // Set routes to delete record
-app.post('/records/:id/delete', (req, res) => {
+app.delete('/records/:id', (req, res) => {
   const id = req.params.id
 
   Record.findById(id)

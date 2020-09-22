@@ -6,7 +6,7 @@
         <div class="card-body">
           <h5 class="card-title">💰 新增支出 💵</h5>
           <hr>
-          <form method="POST" action="/records/{{record._id}}/edit" class="was-validated">
+          <form method="POST" action="/records/{{record._id}}?_method=PUT" class="was-validated">
             <div class="form-group form-row">
               <label for="record-name" class="col-md-2 col-form-label">
                 名稱
