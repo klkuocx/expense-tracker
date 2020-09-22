@@ -9,7 +9,7 @@ const methodOverride = require('method-override')
 const routes = require('./routes')
 require('./config/mongoose')
 const app = express()
-const port = 3000
+const PORT = process.env.PORT || 3000
 
 // Set view engine
 app.engine('hbs', exphbs({ helpers: hbshelpers(), defaultLayout: 'main', extname: '.hbs' }))
@@ -23,6 +23,6 @@ app.use(methodOverride('_method'))
 app.use(routes)
 
 // Listen to server
-app.listen(port, () => {
-  console.log(`Express server is running on http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`Express server is running on http://localhost:${PORT}`)
 })
