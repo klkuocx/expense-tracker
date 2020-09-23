@@ -16,5 +16,8 @@ const categories = [
 // Generate category seed
 db.once('open', () => {
   Category.create(categories)
+    .then(() => {
+      db.close()
+    })
   console.log('categorySeeder.js done ^_^')
 })
