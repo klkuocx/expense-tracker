@@ -39,7 +39,7 @@ router.get('/:id/edit', (req, res) => {
     .then(all => categories = all)
     .catch(error => console.error(error))
 
-  const id = req.params.id
+  const { id } = req.params
   Record.findById(id)
     .populate('category')
     .lean()
@@ -48,7 +48,7 @@ router.get('/:id/edit', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const { id } = req.params
   const update = req.body
   // remove this record from old category
   Record.findById(id)
@@ -81,7 +81,7 @@ router.put('/:id', (req, res) => {
 
 // Set routes to delete record
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
+  const { id } = req.params
 
   Record.findById(id)
     .then(record => {
@@ -102,7 +102,7 @@ router.delete('/:id', (req, res) => {
 
 // Set routes to filter, search record
 router.get('/', (req, res) => {
-  const filter = req.query.filter
+  const { filter } = req.query
   const keyword = req.query.keyword.trim()
   const sort = req.query.sort
 

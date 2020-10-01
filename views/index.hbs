@@ -1,6 +1,7 @@
 <form class="container mt-5" action="/records">
   <div class="form-group row justify-content-between">
-    <div class="filter col-md-4 my-1">
+    {{!-- filter switch --}}
+    <div class="filter col-md-3 my-1">
       <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#category-filter"
         aria-expanded="false" aria-controls="category-filter">
         篩 選 類 別
@@ -18,7 +19,8 @@
         </div>
       </div>
     </div>
-    <div class="search col-md-4 my-1">
+    {{!-- search bar --}}
+    <div class="search col-md-3 my-1">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="search-bar">
@@ -29,7 +31,8 @@
           aria-label="keyword" aria-describedby="search-bar">
       </div>
     </div>
-    <div class="sort col-md-4 my-1">
+    {{!-- sort select --}}
+    <div class="sort col-md-3 my-1">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <label class="input-group-text" for="sort">
@@ -43,8 +46,10 @@
         </select>
       </div>
     </div>
+    <div class="col-md my-1">
+      <button type="submit" class="btn btn-dark">Submit</button>
+    </div>
   </div>
-  <button type="submit" class="btn btn-dark align-self-end">Submit</button>
 </form>
 
 <div class="container my-5">
