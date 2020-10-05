@@ -33,10 +33,9 @@
               </label>
               <div class="col-md-10">
                 <select name="category" id="record-category" class="custom-select" required>
-                  <option value="">請選擇...</option>
+                  <option value="{{record.category.title}}">{{record.category.title}}</option>
                   {{#each categories}}
-                  <option value="{{this.title}}" {{#is this.title "{{record.category.title}}"}} selected {{/is}}>
-                    {{this.title}}</option>
+                  <option value="{{this.title}}">{{this.title}}</option>
                   {{/each}}
                 </select>
               </div>

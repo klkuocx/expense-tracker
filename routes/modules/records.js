@@ -32,18 +32,17 @@ router.post('/new', (req, res) => {
 
 // Set routes to edit record
 router.get('/:id/edit', (req, res) => {
-  let categories = []
-  Category.find()
-    .lean()
-    .sort({ _id: 'asc' })
-    .then(all => categories = all)
-    .catch(error => console.error(error))
-
   const { id } = req.params
   Record.findById(id)
     .populate('category')
     .lean()
-    .then(record => res.render('edit', { record, categories }))
+    .then(record => {
+      Category.find({ _id: { $ne: record.category._id } })
+        .lean()
+        .sort({ _id: 'asc' })
+        .then(categories => res.render('edit', { record, categories }))
+        .catch(error => console.error(error))
+    })
     .catch(error => console.error(error))
 })
 
