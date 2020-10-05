@@ -109,6 +109,17 @@ router.get('/', (req, res) => {
     .lean()
     .sort({ _id: 'asc' })
     .then(categories => {
+      // checked select options
+      let checkedCategories = []
+      let otherCategories = []
+      categories.forEach(category => {
+        if (filter.includes(category._id.toString())) {
+          checkedCategories.push(category)
+        } else {
+          otherCategories.push(category)
+        }
+      })
+
       Record.find({ category: filter })
         .populate('category')
         .lean()
@@ -122,7 +133,7 @@ router.get('/', (req, res) => {
           records.forEach(record => totalAmount += record.amount)
 
           // render records
-          res.render('index', { records, totalAmount, categories, keyword, sort })
+          res.render('index', { records, totalAmount, keyword, sort, checkedCategories, otherCategories })
         })
         .catch(error => console.error(error))
     })

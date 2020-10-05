@@ -16,6 +16,7 @@ app.engine('hbs', exphbs({ helpers: hbshelpers(), defaultLayout: 'main', extname
 app.set('view engine', 'hbs')
 
 // Set middleware
+app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 

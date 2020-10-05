@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   Category.find()
     .lean()
     .sort({ _id: 'asc' })
-    .then(categories => {
+    .then(checkedCategories => {
       Record.find()
         .populate('category')
         .lean()
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         .then(records => {
           let totalAmount = 0
           records.forEach(record => totalAmount += record.amount)
-          res.render('index', { records, totalAmount, categories })
+          res.render('index', { records, totalAmount, checkedCategories })
         })
         .catch(error => console.error(error))
     })
