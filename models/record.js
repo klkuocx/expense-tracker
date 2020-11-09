@@ -21,6 +21,10 @@ const recordSchema = new Schema({
     type: Number,
     min: [1, 'at least one dollar'],
     required: true
+  },
+  merchant: {
+    type: String,
+    required: true
   }
 })
 
