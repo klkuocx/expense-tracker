@@ -1,8 +1,7 @@
 // Include packages
 const express = require('express')
-const exphbs = require('express-handlebars')
-const hbshelpers = require('handlebars-helpers')
 const bodyParser = require('body-parser')
+const useExphbs = require('./config/exphbs')
 const methodOverride = require('method-override')
 
 // Define variables related to server and database
@@ -11,11 +10,8 @@ require('./config/mongoose')
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// Set view engine
-app.engine('hbs', exphbs({ helpers: hbshelpers(), defaultLayout: 'main', extname: '.hbs' }))
-app.set('view engine', 'hbs')
-
 // Set middleware
+useExphbs(app)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
