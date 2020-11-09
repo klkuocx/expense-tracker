@@ -101,9 +101,7 @@ router.delete('/:id', (req, res) => {
 
 // Set routes to filter, search record
 router.get('/', (req, res) => {
-  const { filter } = req.query
-  const keyword = req.query.keyword.trim()
-  const sort = req.query.sort
+  const { filter, sort, keyword, month } = req.query
 
   Category.find()
     .lean()
@@ -125,15 +123,22 @@ router.get('/', (req, res) => {
         .lean()
         .sort({ amount: sort })
         .then(records => {
+          // filter by month
+          if (month) {
+            records = records.filter(record => record.date.slice(5, 7).includes(month))
+          }
+
           // search keyword
-          records = records.filter(record => record.name.toLowerCase().includes(keyword.toLowerCase()))
+          if (keyword) {
+            records = records.filter(record => record.name.toLowerCase().includes(keyword.trim().toLowerCase()))
+          }
 
           // checked total amount
           let totalAmount = 0
           records.forEach(record => totalAmount += record.amount)
 
           // render records
-          res.render('index', { records, totalAmount, keyword, sort, checkedCategories, otherCategories })
+          res.render('index', { records, totalAmount, keyword, sort, month, checkedCategories, otherCategories })
         })
         .catch(error => console.error(error))
     })

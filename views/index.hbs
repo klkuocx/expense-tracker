@@ -1,6 +1,6 @@
 <form class="container mt-5 needs-validation" action="/records">
   <div class="form-group row justify-content-between">
-    {{!-- filter switch --}}
+    {{!-- filter switch for category --}}
     <div class="filter col-md-3 my-1">
       <div class="card mb-3" id="category-filter">
         <div class="card-header bg-secondary text-light">
@@ -30,6 +30,34 @@
         </div>
       </div>
     </div>
+
+    {{!-- filter select for month --}}
+    <div class="filter-month col-md-3 my-1">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text bg-secondary text-light" for="filter-month">
+            <i class="fas fa-calendar-day"></i>
+          </label>
+        </div>
+        <select class="custom-select" id="filter-month" name="month">
+          <option value="" selected>篩 選 月 份...</option>
+          <option value="all" {{#is month "all"}} selected {{/is}}>全選</option>
+          <option value="01" {{#is month "01"}} selected {{/is}}>一月</option>
+          <option value="02" {{#is month "02"}} selected {{/is}}>二月</option>
+          <option value="03" {{#is month "03"}} selected {{/is}}>三月</option>
+          <option value="04" {{#is month "04"}} selected {{/is}}>四月</option>
+          <option value="05" {{#is month "05"}} selected {{/is}}>五月</option>
+          <option value="06" {{#is month "06"}} selected {{/is}}>六月</option>
+          <option value="07" {{#is month "07"}} selected {{/is}}>七月</option>
+          <option value="08" {{#is month "08"}} selected {{/is}}>八月</option>
+          <option value="09" {{#is month "09"}} selected {{/is}}>九月</option>
+          <option value="10" {{#is month "10"}} selected {{/is}}>十月</option>
+          <option value="11" {{#is month "11"}} selected {{/is}}>十一月</option>
+          <option value="12" {{#is month "12"}} selected {{/is}}>十二月</option>
+        </select>
+      </div>
+    </div>
+
     {{!-- search bar --}}
     <div class="search col-md-3 my-1">
       <div class="input-group mb-3">
@@ -42,6 +70,7 @@
           aria-label="keyword" aria-describedby="search-bar">
       </div>
     </div>
+
     {{!-- sort select --}}
     <div class="sort col-md-3 my-1">
       <div class="input-group mb-3">
@@ -57,6 +86,7 @@
         </select>
       </div>
     </div>
+
     <div class="col-md my-1">
       <button type="submit" class="btn btn-dark">Submit</button>
     </div>
