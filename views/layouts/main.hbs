@@ -17,10 +17,16 @@
     <nav class="navbar navbar-dark bg-dark">
       <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand mb-0 h1" href="/">
-          拎北欸記帳本
+          拎北
+          {{#if isAuthenticated}} {{ user.name}} {{/if}}
+          欸記帳本
           <i class="fas fa-money-check-alt"></i>
         </a>
-        <a class="btn btn-warning" href="/records/new" role="button">新 增 支 出</a>
+        {{#if isAuthenticated}}
+        <a href="/users/logout" class="btn btn-outline-light">Logout</a>
+        {{else}}
+        <a href="/users/login" class="btn btn-outline-light">Login</a>
+        {{/if}}
       </div>
     </nav>
   </header>
