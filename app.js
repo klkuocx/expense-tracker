@@ -1,5 +1,6 @@
 // Include packages
 const express = require('express')
+const session = require('express-session')
 const bodyParser = require('body-parser')
 const useExphbs = require('./config/exphbs')
 const methodOverride = require('method-override')
@@ -15,6 +16,11 @@ useExphbs(app)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(session({
+  secret: 'WhySoSerious',
+  resave: false,
+  saveUninitialized: true
+}))
 
 // Set the routes
 app.use(routes)
