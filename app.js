@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const useExphbs = require('./config/exphbs')
 const methodOverride = require('method-override')
 const usePassport = require('./config/passport')
+const flash = require('connect-flash')
 
 // Define variables related to server and database
 const routes = require('./routes')
@@ -23,9 +24,14 @@ app.use(session({
   saveUninitialized: true
 }))
 usePassport(app)
+app.use(flash())
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
+  res.locals.success = req.flash('success')
+  res.locals.error = req.flash('error')
   next()
 })
 

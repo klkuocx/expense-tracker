@@ -16,7 +16,7 @@ module.exports = app => {
         if (user.password !== password) {
           return done(null, false, { message: 'Email or Password incorrect.' })
         }
-        return done(null, user)
+        return done(null, user, { message: `${user.name}, Welcome!` })
       })
       .catch(err => done(err, null))
   }))

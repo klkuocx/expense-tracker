@@ -24,7 +24,10 @@ router.post('/new', (req, res) => {
           category.records.push(record._id)
           category.save()
         })
-        .then(() => res.redirect('/'))
+        .then(() => {
+          req.flash('success_msg', 'Record created successfully!')
+          res.redirect('/')
+        })
         .catch(error => console.error(error))
     })
     .catch(error => console.error(error))
@@ -74,7 +77,10 @@ router.put('/:_id', (req, res) => {
           category.records.push(record._id)
           category.save()
         })
-        .then(() => res.redirect(`/`))
+        .then(() => {
+          req.flash('success_msg', 'Record updated successfully!')
+          res.redirect(`/`)
+        })
         .catch(error => console.error(error))
     })
     .catch(error => console.error(error))
@@ -98,7 +104,10 @@ router.delete('/:_id', (req, res) => {
       // delete this record
       record.remove()
     })
-    .then(() => res.redirect('/'))
+    .then(() => {
+      req.flash('success_msg', 'Record deleted successfully!')
+      res.redirect('/')
+    })
     .catch(error => console.error(error))
 })
 
