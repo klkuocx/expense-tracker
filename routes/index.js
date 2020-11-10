@@ -5,8 +5,10 @@ const home = require('./modules/home')
 const records = require('./modules/records')
 const users = require('./modules/users')
 
-router.use('/records', records) // routes to CRUD records
+const { authenticator } = require('../middleware/auth')
+
+router.use('/records', authenticator, records) // routes to CRUD records
 router.use('/users', users)     // routes to login/register/logout
-router.use('/', home)           // route of home page
+router.use('/', authenticator, home)           // route of home page
 
 module.exports = router
