@@ -18,7 +18,7 @@ router.post('/new', (req, res) => {
   Category.findOne({ title: record.category })
     .then(category => {
       record.category = category._id
-
+      record.userId = req.user._id
       Record.create(record)
         .then(record => {
           category.records.push(record._id)
@@ -31,9 +31,10 @@ router.post('/new', (req, res) => {
 })
 
 // Set routes to edit record
-router.get('/:id/edit', (req, res) => {
-  const { id } = req.params
-  Record.findById(id)
+router.get('/:_id/edit', (req, res) => {
+  const { _id } = req.params
+  const userId = req.user._id
+  Record.findOne({ _id, userId })
     .populate('category')
     .lean()
     .then(record => {
@@ -46,15 +47,16 @@ router.get('/:id/edit', (req, res) => {
     .catch(error => console.error(error))
 })
 
-router.put('/:id', (req, res) => {
-  const { id } = req.params
+router.put('/:_id', (req, res) => {
+  const { _id } = req.params
+  const userId = req.user._id
   const update = req.body
   // remove this record from old category
-  Record.findById(id)
+  Record.findOne({ _id, userId })
     .then(record => {
       Category.findById(record.category)
         .then(category => {
-          category.records = category.records.filter(record => record.toString() !== id)
+          category.records = category.records.filter(record => record.toString() !== _id)
           category.save()
         })
         .catch(error => console.error(error))
@@ -67,7 +69,7 @@ router.put('/:id', (req, res) => {
       update.category = category._id
 
       // update record
-      Record.findByIdAndUpdate(id, update, { new: true })
+      Record.findOneAndUpdate({ _id, userId }, update, { new: true })
         .then(record => {
           category.records.push(record._id)
           category.save()
@@ -79,15 +81,16 @@ router.put('/:id', (req, res) => {
 })
 
 // Set routes to delete record
-router.delete('/:id', (req, res) => {
-  const { id } = req.params
+router.delete('/:_id', (req, res) => {
+  const { _id } = req.params
+  const userId = req.user._id
 
-  Record.findById(id)
+  Record.findOne({ _id, userId })
     .then(record => {
       Category.findById(record.category)
         // remove record from collection of category
         .then(category => {
-          category.records = category.records.filter(record => record.toString() !== id)
+          category.records = category.records.filter(record => record.toString() !== _id)
           category.save()
         })
         .catch(error => console.error(error))
@@ -102,6 +105,7 @@ router.delete('/:id', (req, res) => {
 // Set routes to filter, search record
 router.get('/', (req, res) => {
   const { filter, sort, keyword, month } = req.query
+  const userId = req.user._id
 
   Category.find()
     .lean()
@@ -118,7 +122,7 @@ router.get('/', (req, res) => {
         }
       })
 
-      Record.find({ category: filter })
+      Record.find({ userId, category: filter })
         .populate('category')
         .lean()
         .sort({ amount: sort })

@@ -6,11 +6,12 @@ const Category = require('../../models/category')
 
 // Set route to home
 router.get('/', (req, res) => {
+  const userId = req.user._id
   Category.find()
     .lean()
     .sort({ _id: 'asc' })
     .then(checkedCategories => {
-      Record.find()
+      Record.find({ userId })
         .populate('category')
         .lean()
         .sort({ _id: 'asc' })
