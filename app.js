@@ -4,6 +4,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const useExphbs = require('./config/exphbs')
 const methodOverride = require('method-override')
+const usePassport = require('./config/passport')
 
 // Define variables related to server and database
 const routes = require('./routes')
@@ -21,6 +22,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+usePassport(app)
 
 // Set the routes
 app.use(routes)
