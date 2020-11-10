@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-// route of home page
 const home = require('./modules/home')
-router.use('/', home)
-
-// routes to CRUD records
 const records = require('./modules/records')
-router.use('/records', records)
+const users = require('./modules/users')
+
+router.use('/records', records) // routes to CRUD records
+router.use('/users', users)     // routes to login/register/logout
+router.use('/', home)           // route of home page
 
 module.exports = router
