@@ -29,6 +29,9 @@ router.post('/register', (req, res, next) => {
   if (!name || !email || !password || !confirmPassword) {
     errors.push({ message: 'All fields are required.' })
   }
+  if (password.length < 8) {
+    errors.push({ message: 'Password at least 8 characters minimum.' })
+  }
   if (password !== confirmPassword) {
     errors.push({ message: 'Your password and confirmation password do not match.' })
   }
