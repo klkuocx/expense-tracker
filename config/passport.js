@@ -1,5 +1,8 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const FacebookStrategy = require('passport-facebook').Strategy
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+const { thirdPartyLogin } = require('../middleware/thirdPartyLogin')
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 module.exports = app => {
@@ -23,6 +26,22 @@ module.exports = app => {
       })
       .catch(err => done(err, null))
   }))
+
+  // Set FacebookStrategy
+  passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK,
+    profileFields: ['email', 'displayName']
+  }, thirdPartyLogin))
+
+  // Set GoogleStrategy
+  passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_ID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK,
+    profileFields: ['email', 'displayName']
+  }, thirdPartyLogin))
 
   // serialize & deserialize
   passport.serializeUser((user, done) => {
