@@ -1,5 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 // Include packages and DB related variables
-const mongoose = require('mongoose')
 const Category = require('../category')
 const db = require('../../config/mongoose')
 const categories = [
