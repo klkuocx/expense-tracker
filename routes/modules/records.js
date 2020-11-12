@@ -41,6 +41,7 @@ router.get('/:_id/edit', (req, res) => {
     .populate('category')
     .lean()
     .then(record => {
+      record.date = record.date.toISOString().slice(0, 10)
       Category.find({ _id: { $ne: record.category._id } })
         .lean()
         .sort({ _id: 'asc' })
@@ -113,8 +114,9 @@ router.delete('/:_id', (req, res) => {
 
 // Set routes to filter, search record
 router.get('/', (req, res) => {
-  const { filter, sort, keyword, month } = req.query
+  const { filteredCategory, startDate, endDate, keyword, sort } = req.query
   const userId = req.user._id
+  const sortObj = JSON.parse(sort)
 
   Category.find()
     .lean()
@@ -124,34 +126,36 @@ router.get('/', (req, res) => {
       let checkedCategories = []
       let otherCategories = []
       categories.forEach(category => {
-        if (filter.includes(category._id.toString())) {
+        if (filteredCategory.includes(category._id.toString())) {
           checkedCategories.push(category)
         } else {
           otherCategories.push(category)
         }
       })
 
-      Record.find({ userId, category: filter })
+      Record.find({
+        userId,
+        category: filteredCategory,
+        date: { $gte: startDate, $lte: endDate } // filter within a range of dates
+      })
         .populate('category')
         .lean()
-        .sort({ amount: sort })
+        .sort(sortObj)
         .then(records => {
-          // filter by month
-          if (month) {
-            records = records.filter(record => record.date.slice(5, 7).includes(month))
-          }
-
           // search keyword
           if (keyword) {
             records = records.filter(record => record.name.toLowerCase().includes(keyword.trim().toLowerCase()))
           }
 
-          // checked total amount
+          // checked total amount & transform time string
           let totalAmount = 0
-          records.forEach(record => totalAmount += record.amount)
+          records.forEach(record => {
+            record.date = record.date.toISOString().slice(0, 10)
+            totalAmount += record.amount
+          })
 
           // render records
-          res.render('index', { records, totalAmount, keyword, sort, month, checkedCategories, otherCategories })
+          res.render('index', { records, totalAmount, checkedCategories, otherCategories, startDate, endDate, keyword, sort })
         })
         .catch(error => console.error(error))
     })

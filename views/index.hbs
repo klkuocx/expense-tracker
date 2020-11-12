@@ -7,29 +7,29 @@
 <form class="container mt-5 needs-validation" action="/records">
   <div class="form-group row justify-content-between">
     {{!-- filter switch for category --}}
-    <div class="filter col-md-3 my-1">
-      <div class="card mb-3" id="category-filter">
+    <div class="filteredCategory col-md-3 col-lg-6 my-1">
+      <div class="card mb-3" id="filteredCategory">
         <div class="card-header bg-secondary text-light">
           篩 選 類 別
         </div>
         <div class="card card-body container">
-          <div id="options" class="row">
+          <div id="options" class="row mx-1">
             {{#each checkedCategories}}
-            <div class="custom-control custom-switch col-4 col-md-6 pb-3">
-              <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filter"
+            <div class="custom-control custom-switch col-4 pb-2">
+              <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filteredCategory"
                 value="{{this._id}}" checked>
               <label class="custom-control-label" for="customSwitch{{this._id}}">{{this.title}}</label>
             </div>
             {{/each}}
             {{#each otherCategories}}
-            <div class="custom-control custom-switch col-4 col-md-6 pb-3">
-              <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filter"
+            <div class="custom-control custom-switch col-4 pb-2">
+              <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filteredCategory"
                 value="{{this._id}}">
               <label class="custom-control-label" for="customSwitch{{this._id}}">{{this.title}}</label>
             </div>
             {{/each}}
           </div>
-          <div id="all-none-btn" class="btn-group mt-3" role="group" aria-label="all-none-btn">
+          <div id="all-none-btn" class="btn-group mt-1" role="group" aria-label="all-none-btn">
             <button id="selectAll" type="button" class="btn btn-outline-dark">選擇全部</button>
             <button id="clearAll" type="button" class="btn btn-outline-dark">清除全部</button>
           </div>
@@ -37,34 +37,39 @@
       </div>
     </div>
 
-    {{!-- filter select for month --}}
-    <div class="filter-month col-md-3 my-1">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <label class="input-group-text bg-secondary text-light" for="filter-month">
-            <i class="fas fa-calendar-day"></i>
-          </label>
+    {{!-- within a range of dates --}}
+    <div class="dateRange col-md-3 col-lg-6 my-1">
+      <div class="card mb-3" id="filteredCategory">
+        <div class="card-header bg-secondary text-light">
+          選 擇 區 間
         </div>
-        <select class="custom-select" id="filter-month" name="month">
-          <option value="" selected>篩 選 月 份...</option>
-          <option value="01" {{#is month "01"}} selected {{/is}}>一月</option>
-          <option value="02" {{#is month "02"}} selected {{/is}}>二月</option>
-          <option value="03" {{#is month "03"}} selected {{/is}}>三月</option>
-          <option value="04" {{#is month "04"}} selected {{/is}}>四月</option>
-          <option value="05" {{#is month "05"}} selected {{/is}}>五月</option>
-          <option value="06" {{#is month "06"}} selected {{/is}}>六月</option>
-          <option value="07" {{#is month "07"}} selected {{/is}}>七月</option>
-          <option value="08" {{#is month "08"}} selected {{/is}}>八月</option>
-          <option value="09" {{#is month "09"}} selected {{/is}}>九月</option>
-          <option value="10" {{#is month "10"}} selected {{/is}}>十月</option>
-          <option value="11" {{#is month "11"}} selected {{/is}}>十一月</option>
-          <option value="12" {{#is month "12"}} selected {{/is}}>十二月</option>
-        </select>
+        <div class="card card-body container">
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <label class="input-group-text bg-light" for="startDate">
+                <i class="fas fa-calendar-day"></i>
+                <span class="ml-2">起始日期</span>
+              </label>
+            </div>
+            <input type="date" name="startDate" class="form-control" id="startDate" value="{{startDate}}">
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text bg-light" for="endDate">
+                <i class="fas fa-calendar-day"></i>
+                <span class="ml-2">終止日期</span>
+              </label>
+            </div>
+            <input type="date" name="endDate" class="form-control" id="endDate" value="{{endDate}}">
+          </div>
+        </div>
       </div>
     </div>
 
+
+
     {{!-- search bar --}}
-    <div class="search col-md-3 my-1">
+    <div class="search col-md-3 col-lg-6 my-1">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text bg-secondary text-light" id="search-bar">
@@ -77,7 +82,7 @@
     </div>
 
     {{!-- sort select --}}
-    <div class="sort col-md-3 my-1">
+    <div class="sort col-md-3 col-lg-6 my-1">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <label class="input-group-text bg-secondary text-light" for="sort">
@@ -85,9 +90,11 @@
           </label>
         </div>
         <select class="custom-select" id="sort" name="sort">
-          <option value="" selected>排 序 方 式...</option>
-          <option value="asc" {{#is sort "asc"}} selected {{/is}}>金額遞增</option>
-          <option value="desc" {{#is sort "desc"}} selected {{/is}}>金額遞減</option>
+          <option value="{}" selected>排 序 方 式...</option>
+          <option value='{"amount":"asc"}' {{#is sort '{"amount":"asc"}'}} selected {{/is}}>金額遞增</option>
+          <option value='{"amount":"desc"}' {{#is sort '{"amount":"desc"}'}} selected {{/is}}>金額遞減</option>
+          <option value='{"date":-1}' {{#is sort '{"date":-1}'}} selected {{/is}}>日期新到舊</option>
+          <option value='{"date":1}' {{#is sort '{"date":1}'}} selected {{/is}}>日期舊到新</option>
         </select>
       </div>
     </div>
