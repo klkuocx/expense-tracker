@@ -2,15 +2,24 @@
 A simple web application to start the first step of financial freedom
 
 ## Features
-- read all record
+- create an account to manage expense
+- checkout records with several filter
+
+### Account
+create an account with your email, Facebook or Google
+
+### Manage Expense
 - create new record
 - edit record
 - delete record
+
+### Checkout Records
+- read all records
 - checkout total amount of all or chosen categories
 - filter records by category
+- filter records within a range of dates
 - search records by name
 - sort records by date or amount
-- show record in a month
 
 ## Environment SetUp
 1. [Node.js](https://nodejs.org/en/) 10.22.0
