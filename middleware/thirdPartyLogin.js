@@ -14,5 +14,6 @@ module.exports = {
           .then(user => done(null, user, { message: `${user.name}, Welcome!` }))
           .catch(err => done(err, null))
       })
+      .catch(err => console.error(err))
   }
 }

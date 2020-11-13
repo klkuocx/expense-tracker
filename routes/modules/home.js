@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
         .lean()
         .sort({ _id: 'asc' })
         .then(records => {
-          // sum records and set date
+          // sum records and formate date
           let totalAmount = 0
           records.forEach(record => {
             record.date = record.date.toISOString().slice(0, 10)
@@ -32,9 +32,9 @@ router.get('/', (req, res) => {
           })
           res.render('index', { records, totalAmount, checkedCategories, startDate, endDate })
         })
-        .catch(error => console.error(error))
+        .catch(err => console.error(err))
     })
-    .catch(error => console.error(error))
+    .catch(err => console.error(err))
 })
 
 module.exports = router

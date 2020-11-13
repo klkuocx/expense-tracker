@@ -21,11 +21,7 @@ router.post('/new', (req, res) => {
       record.userId = req.user._id
       Record.create(record)
         .then(record => {
-          category.records.push(record._id)
-          category.save()
-        })
-        .then(() => {
-          req.flash('success_msg', 'Record created successfully!')
+          req.flash('success_msg', `[${record.name}] created successfully!`)
           res.redirect('/')
         })
         .catch(error => console.error(error))
@@ -41,8 +37,8 @@ router.get('/:_id/edit', (req, res) => {
     .populate('category')
     .lean()
     .then(record => {
-      record.date = record.date.toISOString().slice(0, 10)
-      Category.find({ _id: { $ne: record.category._id } })
+      record.date = record.date.toISOString().slice(0, 10) // for Date input value
+      Category.find({ _id: { $ne: record.category._id } }) // for categories options
         .lean()
         .sort({ _id: 'asc' })
         .then(categories => res.render('edit', { record, categories }))
@@ -55,17 +51,6 @@ router.put('/:_id', (req, res) => {
   const { _id } = req.params
   const userId = req.user._id
   const update = req.body
-  // remove this record from old category
-  Record.findOne({ _id, userId })
-    .then(record => {
-      Category.findById(record.category)
-        .then(category => {
-          category.records = category.records.filter(record => record.toString() !== _id)
-          category.save()
-        })
-        .catch(error => console.error(error))
-    })
-    .catch(error => console.error(error))
 
   // assign category id in update object
   Category.findOne({ title: update.category })
@@ -75,11 +60,7 @@ router.put('/:_id', (req, res) => {
       // update record
       Record.findOneAndUpdate({ _id, userId }, update, { new: true })
         .then(record => {
-          category.records.push(record._id)
-          category.save()
-        })
-        .then(() => {
-          req.flash('success_msg', 'Record updated successfully!')
+          req.flash('success_msg', `[${record.name}] updated successfully!`)
           res.redirect(`/`)
         })
         .catch(error => console.error(error))
@@ -92,21 +73,9 @@ router.delete('/:_id', (req, res) => {
   const { _id } = req.params
   const userId = req.user._id
 
-  Record.findOne({ _id, userId })
+  Record.findOneAndDelete({ _id, userId })
     .then(record => {
-      Category.findById(record.category)
-        // remove record from collection of category
-        .then(category => {
-          category.records = category.records.filter(record => record.toString() !== _id)
-          category.save()
-        })
-        .catch(error => console.error(error))
-
-      // delete this record
-      record.remove()
-    })
-    .then(() => {
-      req.flash('success_msg', 'Record deleted successfully!')
+      req.flash('success_msg', `[${record.name}] already deleted!`)
       res.redirect('/')
     })
     .catch(error => console.error(error))
@@ -116,7 +85,6 @@ router.delete('/:_id', (req, res) => {
 router.get('/', (req, res) => {
   const { filteredCategory, startDate, endDate, keyword, sort } = req.query
   const userId = req.user._id
-  const sortObj = JSON.parse(sort)
 
   Category.find()
     .lean()
@@ -126,7 +94,7 @@ router.get('/', (req, res) => {
       let checkedCategories = []
       let otherCategories = []
       categories.forEach(category => {
-        if (filteredCategory.includes(category._id.toString())) {
+        if (filteredCategory.includes(category.title)) {
           checkedCategories.push(category)
         } else {
           otherCategories.push(category)
@@ -135,14 +103,14 @@ router.get('/', (req, res) => {
 
       Record.find({
         userId,
-        category: filteredCategory,
+        category: checkedCategories.map(category => category._id), // filter by categories
         date: { $gte: startDate, $lte: endDate } // filter within a range of dates
       })
         .populate('category')
         .lean()
-        .sort(sortObj)
+        .sort(JSON.parse(sort))
         .then(records => {
-          // search keyword
+          // search by keyword
           if (keyword) {
             records = records.filter(record => record.name.toLowerCase().includes(keyword.trim().toLowerCase()))
           }

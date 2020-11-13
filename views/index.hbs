@@ -17,14 +17,14 @@
             {{#each checkedCategories}}
             <div class="custom-control custom-switch col-4 pb-2">
               <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filteredCategory"
-                value="{{this._id}}" checked>
+                value="{{this.title}}" checked>
               <label class="custom-control-label" for="customSwitch{{this._id}}">{{this.title}}</label>
             </div>
             {{/each}}
             {{#each otherCategories}}
             <div class="custom-control custom-switch col-4 pb-2">
               <input type="checkbox" class="custom-control-input" id="customSwitch{{this._id}}" name="filteredCategory"
-                value="{{this._id}}">
+                value="{{this.title}}">
               <label class="custom-control-label" for="customSwitch{{this._id}}">{{this.title}}</label>
             </div>
             {{/each}}
