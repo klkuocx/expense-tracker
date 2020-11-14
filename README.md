@@ -5,7 +5,9 @@ A simple web application to start the first step of financial freedom
 
 ### Demo
 [Heroku App](https://kl-expense-tracker.herokuapp.com/)
+
 email: root@example.com
+
 password: 12345678
 
 ### More intro
