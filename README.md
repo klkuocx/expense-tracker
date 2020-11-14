@@ -1,6 +1,16 @@
 # expense-tracker
 A simple web application to start the first step of financial freedom
 
+![拎北欸記帳本](https://i.imgur.com/GJ42O2V.png)
+
+### Demo
+[Heroku App](https://kl-expense-tracker.herokuapp.com/)
+email: root@example.com
+password: 12345678
+
+### More intro
+[Blog](https://medium.com/infinitegamer/software-project-intro-ea1172583a94)
+
 ## Features
 - create an account to manage expense
 - checkout records with several filter
